@@ -1,0 +1,41 @@
+Iniciar uma nova sessão: Acesse o site https://labs.play-with-docker.com/ e clique em "Start". Isto iniciará uma nova sessão para você. Você pode precisar se logar com uma conta Docker primeiro.
+
+Adicionar uma nova instância: Clique no botão "+ ADD NEW INSTANCE" no lado esquerdo da tela. Isso criará uma nova instância de Docker para você trabalhar.
+
+Executar o comando Docker: No terminal da nova instância, você pode executar comandos Docker. Por exemplo, você pode executar docker version para verificar a versão do Docker instalada.
+
+
+
+docker pull nginx (baixa imagem do dockerhub)
+
+
+Customizando nginx, usando base image nginx:latest
+
+Arquivo Dockerfile contém as instruções de comandos de customização,
+copia o arquivo index.html do diretório atual no servidor para dentro da imagem
+e o arquivo nginx.conf
+
+o comando docker build -t aula-nginx .
+
+lẽ as instruções do dockerfile  cria a imagem customizada
+
+o comando docker run -d -p 80:80 aula-nginx  executa a imagem
+
+wget https://raw.githubusercontent.com/able2cloud/continuous_monitoring_log_analytics/main/container_dockerfile/Dockerfile
+wget https://raw.githubusercontent.com/able2cloud/continuous_monitoring_log_analytics/main/container_dockerfile/index.html
+https://raw.githubusercontent.com/able2cloud/continuous_monitoring_log_analytics/main/container_dockerfile/nginx.conf
+docker build -t aula-nginx .
+docker run -d -p 80:80 aula-nginx .
+
+
+
+Remove imagens:
+
+$ docker rmi $(docker images -q) -f
+docker system prune --all
+docker system prune --all -f
+control + ins = copia
+shitt + ins = cola
+
+
+comando wget baixa arquivos.
