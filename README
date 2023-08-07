@@ -1,0 +1,86 @@
+
+
+#Docker Volumes
+
+#Crie um volume chamado my-volume.
+
+docker volume create my-volume
+
+#Monte o volume my-volume em um container.
+
+docker run -v my-volume:/data -it ubuntu
+
+
+#Salve alguns dados no volume.
+
+
+touch /data/my-file
+#Remova o container, mas mantenha o volume.
+
+
+docker rm -f my-container
+#Crie um novo container e monte o volume my-volume.
+
+
+docker run -v my-volume:/data -it ubuntu
+
+
+#Verifique se os dados que você salvou ainda estão lá.
+
+
+cat /data/my-file
+#Docker Networks
+
+#Crie uma rede chamada my-network.
+
+
+docker network create my-network
+#Conecte dois containers à rede my-network.
+
+
+docker run -it --net my-network ubuntu
+docker run -it --net my-network ubuntu
+#Os containers podem se comunicar entre si usando seus nomes.
+
+
+docker exec -it my-container-1 ping my-container-2
+#Docker Compose
+
+#Crie um arquivo docker-compose.yml que defina duas imagens de contêiner.
+
+
+version: '3.8'
+services:
+  web:
+    image: nginx
+  db:
+    image: postgres
+
+
+#Crie dois containers a partir das imagens definidas no arquivo docker-compose.yml.
+#docker-compose up -d
+#Os containers serão conectados à mesma rede e poderão se comunicar entre si usando seus nomes.
+
+docker-compose exec web ping db
+########################################################################################################
+Dockerfile
+
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y nginx
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+Essa imagem Docker instalará o servidor web Nginx no Ubuntu e exporá a porta 80. Você pode exportar essa imagem para um arquivo usando o seguinte comando:
+
+docker export my_nginx_image > my_nginx_image.tar
+
+Depois de exportar a imagem, você pode copiar o arquivo my_nginx_image.tar para outro computador e importá-lo para o Docker usando o seguinte comando:
+
+docker import my_nginx_image.tar
+Após a importação, a imagem estará disponível no seu repositório Docker e você poderá usá-la para criar novos contêineres.
+
+Para criar um novo contêiner a partir da imagem exportada, você pode usar o seguinte comando:
+
+docker run -d -p 8080:80 my_nginx_image
+Esse comando criará um novo contêiner que exporá a porta 8080 do seu computador. Você pode então acessar o servidor web Nginx no endereço http://localhost:8080.
