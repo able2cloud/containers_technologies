@@ -1,34 +1,27 @@
 
 
-#Docker Volumes
-
 #Crie um volume chamado my-volume.
-
 docker volume create my-volume
 
+
 #Monte o volume my-volume em um container.
-
-docker run -v my-volume:/data -it ubuntu
-
+docker run -v my-volume:/tmp -it ubuntu
 
 #Salve alguns dados no volume.
+echo "Hello world" > /tmp/my-file
 
-
-touch /data/my-file
 #Remova o container, mas mantenha o volume.
-
-
 docker rm -f my-container
+
 #Crie um novo container e monte o volume my-volume.
-
-
-docker run -v my-volume:/data -it ubuntu
-
+docker run -v my-volume:/tmp -it ubuntu
 
 #Verifique se os dados que você salvou ainda estão lá.
+cat /tmp/my-file
+#A saída deve ser:
 
-
-cat /data/my-file
+Hello world
+#Como você pode ver, os dados que você salvou no volume my-volume ainda estão lá, mesmo que você tenha removido o container. Isso ocorre porque o volume my-volume é um recurso persistente que existe independentemente do container.
 #Docker Networks
 
 #Crie uma rede chamada my-network.
