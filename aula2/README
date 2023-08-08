@@ -52,24 +52,38 @@ services:
 
 docker-compose exec web ping db
 ########################################################################################################
-Dockerfile
+#Docker export
+#O comando docker export permite que você exporte um container como um arquivo tarball. É útil quando você quer capturar o estado atual de um container (o sistema de arquivos do container) para transferir para outro sistema, por exemplo.
 
-FROM ubuntu
-RUN apt-get update
-RUN apt-get install -y nginx
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+#Sintaxe básica:
 
-Essa imagem Docker instalará o servidor web Nginx no Ubuntu e exporá a porta 80. Você pode exportar essa imagem para um arquivo usando o seguinte comando:
 
-docker export my_nginx_image > my_nginx_image.tar
+#docker export [OPTIONS] CONTAINER > nome_do_arquivo.tar
 
-Depois de exportar a imagem, você pode copiar o arquivo my_nginx_image.tar para outro computador e importá-lo para o Docker usando o seguinte comando:
 
-docker import my_nginx_image.tar
-Após a importação, a imagem estará disponível no seu repositório Docker e você poderá usá-la para criar novos contêineres.
+#Docker import
+#Depois de exportar um container usando docker export, você pode usar o comando docker import para criar uma nova imagem Docker a partir do arquivo tarball. Esta imagem pode ser usada para criar novos containers no sistema atual ou em outros sistemas.
 
-Para criar um novo contêiner a partir da imagem exportada, você pode usar o seguinte comando:
+#Sintaxe básica:
 
-docker run -d -p 8080:80 my_nginx_image
-Esse comando criará um novo contêiner que exporá a porta 8080 do seu computador. Você pode então acessar o servidor web Nginx no endereço http://localhost:8080.
+#docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
+
+#Criação e Exportação de um Container:
+#Primeiro, vamos criar um container básico do Ubuntu, fazer uma pequena modificação e depois exportá-lo.
+
+# Cria um container Ubuntu e instala o curl
+docker run -it --name meu_container ubuntu bash -c "apt-get update && apt-get install -y curl"
+
+# Exporta o container para um arquivo tarball
+docker export meu_container > meu_container.tar
+
+
+#Importação e Verificação da Nova Imagem:
+#Depois de exportar o container, vamos importá-lo como uma nova imagem e verificar se a modificação (instalação do curl) ainda está lá.
+
+# Importa o arquivo tarball como uma nova imagem Docker
+docker import meu_container.tar minha_nova_imagem:latest
+
+# Cria um novo container a partir da imagem recém-importada e verifica a instalação do curl
+docker run minha_nova_imagem curl --version
+
