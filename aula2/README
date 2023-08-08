@@ -24,20 +24,16 @@ Hello world
 #Como você pode ver, os dados que você salvou no volume my-volume ainda estão lá, mesmo que você tenha removido o container. Isso ocorre porque o volume my-volume é um recurso persistente que existe independentemente do container.
 #Docker Networks
 
-#Crie uma rede chamada my-network.
-
-
+# Crie uma rede chamada my-network.
 docker network create my-network
-#Conecte dois containers à rede my-network.
 
+# Conecte dois containers à rede my-network e dê-lhes nomes.
+docker run -it --net my-network --name my-container-1 ubuntu
+docker run -it --net my-network --name my-container-2 ubuntu
 
-docker run -it --net my-network ubuntu
-docker run -it --net my-network ubuntu
-#Os containers podem se comunicar entre si usando seus nomes.
-
-
+# Os containers podem se comunicar entre si usando seus nomes.
+# No caso abaixo, você está fazendo o container-1 pingar o container-2.
 docker exec -it my-container-1 ping my-container-2
-#Docker Compose
 
 #Crie um arquivo docker-compose.yml que defina duas imagens de contêiner.
 
