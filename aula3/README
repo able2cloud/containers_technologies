@@ -1,0 +1,62 @@
+ubuntu 22.04
+
+# Abra um terminal e navegue até o diretório onde você deseja instalar o Anchore.
+
+# Upgrade e Update
+sudo apt update -y && sudo apt upgrade -y
+
+# Adicione o repositório de deadsnakes para acessar versões mais antigas do Python
+sudo apt-add-repository ppa:deadsnakes/ppa -y
+
+# Atualize a lista de pacotes novamente após adicionar o repositório
+sudo apt update -y
+
+# Instale o Python 3.9 e venv
+sudo apt install python3.9 python3.9-venv -y
+
+# Crie um ambiente virtual usando Python 3.9
+python3.9 -m venv anchore-env
+
+# Ative o ambiente virtual
+source anchore-env/bin/activate
+
+# Instale o Docker
+sudo apt install docker.io docker-compose -y
+
+# Inicie e habilite o Docker
+sudo systemctl start docker && sudo systemctl enable docker
+
+# Baixe o arquivo de configuração do Anchore
+curl https://engine.anchore.io/docs/quickstart/docker-compose.yaml > docker-compose.yml
+
+# Crie um contêiner para o Anchore Engine
+sudo docker-compose up -d
+
+# Atualize o pip dentro do ambiente virtual
+pip install --upgrade pip
+
+# Instale o Anchore CLI
+pip install anchorecli
+
+# Exporte as variáveis de ambiente ANCHORE_CLI_URL, ANCHORE_CLI_USER e ANCHORE_CLI_PASS
+export ANCHORE_CLI_URL=http://0.0.0.0:8228/v1
+export ANCHORE_CLI_USER=admin
+export ANCHORE_CLI_PASS=foobar
+
+# Use o Anchore CLI para adicionar imagens, analisar imagens e verificar vulnerabilidades
+
+# Adicione a imagem mariadb:latest ao Anchore Engine
+anchore-cli image add mariadb:latest
+
+# Verifique o status da análise da imagem
+anchore-cli image wait mariadb:latest
+
+# Liste as imagens analisadas pelo Anchore Engine
+anchore-cli image list
+
+# Obtenha uma visão geral da imagem
+anchore-cli image get mariadb:latest
+
+# Obtenha os resultados da varredura de vulnerabilidade em uma imagem
+anchore-cli image vuln mariadb:latest os
+
