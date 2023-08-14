@@ -1,5 +1,6 @@
 Passo a passo para criar e acessar uma instância Ubuntu 22.04 no Google Cloud Platform (GCP)
 
+
 1. Acessando o GCP:
 
 Abra seu navegador preferido e digite na barra de endereços: https://cloud.google.com
@@ -8,21 +9,18 @@ Na página inicial, procure um botão escrito “Começar grátis” ou "Get Sta
 
 2. Criando sua conta:
 
-
 Você será levado a uma página de inscrição. Preencha os campos solicitados com seus dados pessoais: nome completo, endereço de e-mail e senha.
 Depois de inserir todas as informações, localize e clique no botão que diz “Criar conta” ou "Create Account".
 Um e-mail de verificação será enviado ao endereço fornecido. Abra seu e-mail, procure pela mensagem do Google Cloud e clique no link de confirmação.
 Uma vez confirmado, você será automaticamente redirecionado para o console do GCP.
 
-
 3. Ativando o Compute Engine:
+
 Dentro do console, na barra lateral esquerda, procure por “Compute Engine” e clique nele. Se não encontrar diretamente, pode estar dentro de uma seção chamada "Compute".
 
-
-
-
-
 4. Criando a instância:
+
+
 Agora, no centro da tela, você deve ver um botão chamado “Criar instância” ou "Create Instance". Clique nele.
 Uma nova página será aberta. Aqui é onde você configurará sua instância
 
@@ -37,11 +35,14 @@ Grupo de segurança: Novamente, mantenha as opções padrão.
 Configurações adicionais: Aqui, você pode configurar coisas como armazenamento. Para este tutorial, a configuração padrão deve ser suficiente.
 Depois de revisar suas escolhas, clique no botão “Criar” ou "Create".
 
+
 5. Acessando a instância via browser:
 
 Uma vez que sua instância esteja pronta (isso pode levar alguns minutos), você verá ela listada no painel “Compute Engine”.
 À direita do nome da instância, você verá um ícone que parece com um terminal ou uma tela. Clique nele.
 Isso abrirá um terminal diretamente no seu navegador, permitindo que você interaja com sua instância Ubuntu 22.04.
+
+
 
 
 agora siga os passos do podman, dos slides acompanhando com o professor.
