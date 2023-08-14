@@ -10,6 +10,7 @@ Você será levado a uma página de inscrição. Preencha os campos solicitados 
 Depois de inserir todas as informações, localize e clique no botão que diz “Criar conta” ou "Create Account".
 Um e-mail de verificação será enviado ao endereço fornecido. Abra seu e-mail, procure pela mensagem do Google Cloud e clique no link de confirmação.
 Uma vez confirmado, você será automaticamente redirecionado para o console do GCP.
+
 3. Ativando o Compute Engine:
 
 Dentro do console, na barra lateral esquerda, procure por “Compute Engine” e clique nele. Se não encontrar diretamente, pode estar dentro de uma seção chamada "Compute".
