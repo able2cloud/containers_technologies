@@ -1,0 +1,63 @@
+
+Processo para criar e acessar uma instância Ubuntu 22.04 no Amazon Web Services (AWS), usando o serviço EC2:
+
+Passo a passo para criar e acessar uma instância Ubuntu 22.04 no AWS EC2:
+
+1. Acessando o AWS Management Console:
+
+Abra seu navegador e acesse: https://aws.amazon.com/pt/console/
+Clique em “Entrar no Console” ou "Sign in to the Console".
+Faça login com suas credenciais da AWS.
+2. Localizando o serviço EC2:
+
+Uma vez dentro do console, no campo de busca no topo da página, digite “EC2” e clique no serviço EC2 que aparecerá nos resultados.
+3. Iniciando o lançamento de uma instância:
+
+No painel do EC2, localize e clique no botão “Lançar instância” ou "Launch Instance".
+4. Escolhendo a máquina virtual:
+
+Você será apresentado a uma lista de imagens de máquinas (AMIs).
+Role a lista e localize "Ubuntu Server 22.04 LTS". Clique no botão "Selecionar" à direita dessa opção.
+5. Escolhendo o tipo de instância:
+
+Na próxima tela, você escolherá o tipo de instância.
+Localize “t3.medium” na lista e selecione-o.
+Depois de selecionado, clique no botão “Próximo: Configure os detalhes da instância” ou "Next: Configure Instance Details".
+6. Configuração da instância:
+
+Para este tutorial, você pode manter as configurações padrão e prosseguir para a próxima etapa, clicando em “Próximo: Adicionar armazenamento” ou "Next: Add Storage".
+7. Configuração de armazenamento:
+
+O armazenamento padrão de 8 GB geralmente é suficiente para fins de tutorial.
+Clique em “Próximo: Adicionar tags” ou "Next: Add Tags".
+8. Adicionando tags (opcional):
+
+As tags são úteis para identificar recursos, mas você pode ignorar essa etapa para fins de tutorial.
+Clique em “Próximo: Configurar o grupo de segurança” ou "Next: Configure Security Group".
+9. Configuração do grupo de segurança:
+
+Opte por “Criar um novo grupo de segurança” ou "Create a new security group".
+Dê um nome para o grupo, por exemplo, “UbuntuTutorialGroup”.
+Você precisará adicionar regras para permitir tráfego:
+Clique em "Adicionar regra" ou "Add Rule".
+Selecione “SSH” no tipo de regra. Isso permitirá que você se conecte à instância.
+Na coluna "Origem" ou "Source", selecione "Em qualquer lugar" ou "Anywhere" para permitir conexões SSH de qualquer IP (não recomendado para ambientes de produção, mas aceitável para um tutorial)
+
+Depois de definir as regras, clique em "Revisar e lançar" ou "Review and Launch".
+
+
+10. Revisar e lançar:
+
+Revise as configurações de sua instância.
+Clique no botão “Lançar” ou "Launch".
+Você será solicitado a selecionar um par de chaves para acessar sua instância. Se você já tiver um, selecione-o. Caso contrário, crie um novo, faça o download e guarde-o em um local seguro. Você precisará dele para se conectar via SSH.
+Clique em “Lançar instâncias” ou "Launch Instances".
+
+
+11. Acessando a instância via browser:
+
+Retorne ao painel do EC2.
+Na barra lateral esquerda, clique em “Instâncias” ou "Instances".
+Localize sua instância recém-criada na lista.
+Selecione sua instância e, no topo, clique no botão “Conectar” ou "Connect".
+Uma janela pop-up será exibida. Selecione a guia “EC2 Instance Connect (browser-based SSH connection)” e siga as instruções para se conectar à sua instância diretamente pelo navegador.
