@@ -23,6 +23,10 @@ source anchore-env/bin/activate
 # Instale o Docker
 sudo apt install docker.io docker-compose -y
 
+#Se o docker estiver instalado
+sudo apt install  docker-compose -y
+
+
 # Inicie e habilite o Docker
 sudo systemctl start docker && sudo systemctl enable docker
 
