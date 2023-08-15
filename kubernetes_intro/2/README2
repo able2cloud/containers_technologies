@@ -1,0 +1,22 @@
+
+crie um namespace 
+
+
+kubectl create ns aula3
+
+baixe o arquivo deployment.yaml com o seguinte conteúdo:
+
+wget github/nginx-deployment.yaml
+wget github/nginx-service.yaml
+
+cria os recursos:
+
+kubectl create -f nginx-service.yaml; kubectl create -f nginx-deployment.yaml
+
+#liste os pods
+
+kubectl get pods -n aula3
+
+
+# faça um portforward do pod
+kubectl port-forward service/nginx-deployment 8080:80
