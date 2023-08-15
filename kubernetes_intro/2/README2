@@ -6,8 +6,8 @@ kubectl create ns aula3
 
 baixe o arquivo deployment.yaml com o seguinte conteúdo:
 
-wget github/nginx-deployment.yaml
-wget github/nginx-service.yaml
+wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/kubernetes_intro/2/nginx-deployment.yaml
+wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/kubernetes_intro/2/nginx-service.yaml
 
 cria os recursos:
 
