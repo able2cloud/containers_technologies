@@ -15,7 +15,7 @@ sudo apt update -y
 sudo apt install python3.9 python3.9-venv -y
 
 # Crie um ambiente virtual usando Python 3.9
-python3.9 -m venv anchore-env
+sudo python3.9 -m venv anchore-env
 
 # Ative o ambiente virtual
 source anchore-env/bin/activate
