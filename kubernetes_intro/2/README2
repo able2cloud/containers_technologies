@@ -20,3 +20,8 @@ kubectl get pods -n aula3
 
 # faça um portforward do pod
 kubectl port-forward service/nginx-service 8080:80 --address=0.0.0.0 -n aula3
+
+kubectl logs -f nomedopod -n aula3
+
+
+kubeclt describe pod nomedopo -n aula3
