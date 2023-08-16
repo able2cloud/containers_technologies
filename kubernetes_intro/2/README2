@@ -19,4 +19,4 @@ kubectl get pods -n aula3
 
 
 # faça um portforward do pod
-kubectl port-forward service/nginx-deployment 8080:80
+kubectl port-forward service/nginx-service 8080:80 --address=0.0.0.0 -n aula3
