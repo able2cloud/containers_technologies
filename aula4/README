@@ -106,7 +106,7 @@ Abra um prompt de comando ou um terminal.
 
 Execute o seguinte comando:
 
-      ```sudo apt install awscli
+sudo apt install awscli
 
 Configure o AWS CLI.
 
@@ -117,14 +117,14 @@ cd ~/.aws/
 
 Adicione as seguintes informações ao arquivo:
 
-wget git/taylao/config
+wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula4/config
 
 
 Faça login no seu repositório ECR.
 
 Execute o seguinte comando:
 
-      aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
 
 4. Baixe a imagem httpbin:latest do Docker Hub.
 
@@ -137,7 +137,7 @@ Faça o commit da imagem.
 
 Execute o seguinte comando:
 
-      docker commit <container-id> httpbin:aula4
+docker commit <container-id> httpbin:aula4
 
 
 Obs: liste o container-id com docker ps
