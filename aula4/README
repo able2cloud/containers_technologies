@@ -78,7 +78,7 @@ sudo apt install awscli
 Configure o AWS CLI.
 cd ~/.aws/
 
-dentro do diretorio ~/.aws confime com o comando pwd, substitui o arquivo com o comando abaixo:
+dentro do diretorio ~/.aws confime com o comando pwd, substitua o arquivo com o comando abaixo:
 
 wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula4/config
 
