@@ -47,60 +47,24 @@ O cluster EKS será criado e estará pronto para uso em alguns minutos.
 Depois que o cluster estiver pronto, você poderá usá-lo para implantar e gerenciar seus aplicativos de contêiner.
 
 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
 Etapa 4: Introdução ao ECR
 
 Acesse o ECR a partir da AWS Management Console.
 Crie um novo repositório.
 1. Clique em "Criar repositório".
 2. Na página "Criar repositório", forneça as seguintes informações:
-    * Nome do repositório: O nome do seu repositório ECR.
+    * Nome do repositório: O nome do seu repositório ECR. (eu usei aula4 (exemplo))
     * Descrição do repositório: Uma descrição do seu repositório ECR.
 3. Clique em "Criar".
 
 
-
-
-
-4
-
-
-
-
-Instale o AWS CLI.
-
-Abra um prompt de comando ou um terminal.
-
-Execute o seguinte comando:
-
-      ```sudo apt install awscli
-
-
-
-
-      Configure o AWS CLI.
-
-Abra o arquivo ~/.aws/config.
-
-Adicione as seguintes informações ao arquivo:
-
-      ```[default]
-region = us-east-1
-output = json
-
-
-
-Faça login no seu repositório ECR.
-
-Execute o seguinte comando:
-
-      ```aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.co
-
-
-
-
-Claro, aqui estão as instruções para baixar a imagem httpbin:latest do Docker Hub, fazer o commit da imagem, alterar o nome da imagem para httpbin:aula4 e enviá-la para o seu repositório aula4 no ECR:
-
-Instale o AWS CLI.
+  Instale o AWS CLI.
 
 Abra um prompt de comando ou um terminal.
 
@@ -108,16 +72,18 @@ Execute o seguinte comando:
 
 sudo apt install awscli
 
+
+
+
 Configure o AWS CLI.
-
-
-entre no diretório: 
-
 cd ~/.aws/
 
 Adicione as seguintes informações ao arquivo:
 
 wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula4/config
+
+
+
 
 
 Faça login no seu repositório ECR.
@@ -162,6 +128,3 @@ Aqui estão algumas dicas adicionais para escanear imagens via console:
 Você pode escanear imagens individualmente ou em grupos.
 Você pode agendar escaneamentos de imagem para serem executados automaticamente.
 Você pode visualizar os resultados do escaneamento de imagem em um formato gráfico ou de tabela.
-
-
-
