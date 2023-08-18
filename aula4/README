@@ -37,7 +37,7 @@ Tipo do nó: O tipo de nó que você deseja usar para seu cluster EKS.
 t3.medium
 
 Número de nós: O número de nós que você deseja em seu cluster EKS.
-2
+
 
 VPC: Deixe a VPC padrão selecionada.
 Sub-rede: Deixe a sub-rede padrão selecionada.
@@ -53,7 +53,7 @@ Depois que o cluster estiver pronto, você poderá usá-lo para implantar e gere
 
 
 
-Etapa 4: Introdução ao ECR
+Introdução ao ECR
 
 Acesse o ECR a partir da AWS Management Console.
 Crie um novo repositório.
@@ -64,7 +64,7 @@ Crie um novo repositório.
 3. Clique em "Criar".
 
 
-  Instale o AWS CLI.
+Instale o AWS CLI.
 
 Abra um prompt de comando ou um terminal.
 
@@ -92,10 +92,10 @@ Execute o seguinte comando:
 
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
 
-4. Baixe a imagem httpbin:latest do Docker Hub.
+Baixe a imagem httpbin:latest do Docker Hub.
 
 * Execute o seguinte comando:
-    docker pull httpbin:latest
+  docker pull httpbin:latest
 
 
 
@@ -103,7 +103,7 @@ Faça o commit da imagem.
 
 Execute o seguinte comando:
 
-docker commit <container-id> httpbin:aula4
+  docker commit <container-id> httpbin:aula4
 
 
 Obs: liste o container-id com docker ps
@@ -112,7 +112,7 @@ Envie a imagem para o seu repositório ECR.
 
 Execute o seguinte comando:
 
-      docker push <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/aula4/httpbin:aula4
+  docker push <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/aula4/httpbin:aula4
 
 
 
