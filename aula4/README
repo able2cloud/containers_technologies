@@ -1,0 +1,167 @@
+Ambiente e Pré-requisitos
+
+Conta AWS Academy: Os alunos já possuem uma conta na AWS Academy.
+Instância EC2: Todos os alunos têm acesso a uma instância EC2 executando Ubuntu 22.04. Esta instância atuará como seu ambiente de trabalho durante o laboratório.
+Etapa 1: Preparando o Ambiente
+
+Acesse a instância EC2.
+Atualize a lista de pacotes e o sistema operacional.
+sudo apt update
+sudo apt upgrade
+Instale os pré-requisitos.
+sudo apt install docker-ce kubectl
+Etapa 2: Configuração do kubectl
+
+Instale o kubectl.
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.0/bin/linux/amd64/kubectl
+sudo chmod +x kubectl
+sudo mv kubectl /usr/local/bin/kubectl
+Verifique a instalação.
+kubectl version
+
+
+
+
+Acesse o console de gerenciamento da AWS.
+
+Clique em "Serviços" e selecione "Kubernetes".
+
+Na página "Clusters EKS", clique em "Criar cluster".
+
+Na página "Criar cluster", forneça as seguintes informações:
+
+Nome do cluster: O nome do seu cluster EKS.
+de um nome da sua preferência
+exemplo aula4
+Tipo do nó: O tipo de nó que você deseja usar para seu cluster EKS.
+t3.medium
+
+Número de nós: O número de nós que você deseja em seu cluster EKS.
+2
+
+VPC: Deixe a VPC padrão selecionada.
+Sub-rede: Deixe a sub-rede padrão selecionada.
+Clique em "Criar".
+O cluster EKS será criado e estará pronto para uso em alguns minutos.
+
+Depois que o cluster estiver pronto, você poderá usá-lo para implantar e gerenciar seus aplicativos de contêiner.
+
+
+Etapa 4: Introdução ao ECR
+
+Acesse o ECR a partir da AWS Management Console.
+Crie um novo repositório.
+1. Clique em "Criar repositório".
+2. Na página "Criar repositório", forneça as seguintes informações:
+    * Nome do repositório: O nome do seu repositório ECR.
+    * Descrição do repositório: Uma descrição do seu repositório ECR.
+3. Clique em "Criar".
+
+
+
+
+
+4
+
+
+
+
+Instale o AWS CLI.
+
+Abra um prompt de comando ou um terminal.
+
+Execute o seguinte comando:
+
+      ```sudo apt install awscli
+
+
+
+
+      Configure o AWS CLI.
+
+Abra o arquivo ~/.aws/config.
+
+Adicione as seguintes informações ao arquivo:
+
+      ```[default]
+region = us-east-1
+output = json
+
+
+
+Faça login no seu repositório ECR.
+
+Execute o seguinte comando:
+
+      ```aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.co
+
+
+
+
+Claro, aqui estão as instruções para baixar a imagem httpbin:latest do Docker Hub, fazer o commit da imagem, alterar o nome da imagem para httpbin:aula4 e enviá-la para o seu repositório aula4 no ECR:
+
+Instale o AWS CLI.
+
+Abra um prompt de comando ou um terminal.
+
+Execute o seguinte comando:
+
+      ```sudo apt install awscli
+
+Configure o AWS CLI.
+
+
+entre no diretório: 
+
+cd ~/.aws/
+
+Adicione as seguintes informações ao arquivo:
+
+wget git/taylao/config
+
+
+Faça login no seu repositório ECR.
+
+Execute o seguinte comando:
+
+      aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
+
+4. Baixe a imagem httpbin:latest do Docker Hub.
+
+* Execute o seguinte comando:
+    docker pull httpbin:latest
+
+
+
+Faça o commit da imagem.
+
+Execute o seguinte comando:
+
+      docker commit <container-id> httpbin:aula4
+
+
+Obs: liste o container-id com docker ps
+
+Envie a imagem para o seu repositório ECR.
+
+Execute o seguinte comando:
+
+      docker push <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com/aula4/httpbin:aula4
+
+
+
+Acesse o console do Amazon Elastic Container Registry (ECR).
+Clique no repositório aula4.
+Na guia "Imagens", clique no nome da imagem httpbin:aula4.
+Na barra lateral esquerda, clique em "Inspecionar".
+Na guia "Scanner de imagem", clique em "Iniciar varredura".
+O escaneamento da imagem levará alguns minutos para ser concluído. Quando estiver concluído, você poderá ver os resultados do escaneamento na guia "Resultados".
+
+Aqui estão algumas dicas adicionais para escanear imagens via console:
+
+Você pode escanear imagens individualmente ou em grupos.
+Você pode agendar escaneamentos de imagem para serem executados automaticamente.
+Você pode visualizar os resultados do escaneamento de imagem em um formato gráfico ou de tabela.
+
+
+
