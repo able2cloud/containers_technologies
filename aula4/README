@@ -4,20 +4,59 @@ Conta AWS Academy: Os alunos já possuem uma conta na AWS Academy.
 Instância EC2: Todos os alunos têm acesso a uma instância EC2 executando Ubuntu 22.04. Esta instância atuará como seu ambiente de trabalho durante o laboratório.
 Etapa 1: Preparando o Ambiente
 
-Acesse a instância EC2.
-Atualize a lista de pacotes e o sistema operacional.
-sudo apt update
-sudo apt upgrade
-Instale os pré-requisitos.
-sudo apt install docker-ce kubectl
-Etapa 2: Configuração do kubectl
+Acesse a instância EC2 usando SSH ou qualquer método preferido.
+Atualize a lista de pacotes e o sistema operacional com os seguintes comandos:
 
-Instale o kubectl.
+
+sudo apt update
+sudo apt upgrade -y
+
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt update
+sudo apt install docker-ce -y
+
+Instale o kubectl
+
+sudo apt install -y kubectl
+
+Ou
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.0/bin/linux/amd64/kubectl
 sudo chmod +x kubectl
 sudo mv kubectl /usr/local/bin/kubectl
-Verifique a instalação.
-kubectl version
+
+
+
+Acesse o console do IAM da AWS.
+Clique em Papéis.
+Clique em Criar papel.
+Na página Criar papel, siga estas etapas:
+Na caixa de pesquisa, digite "EKS".
+Na lista de papéis, selecione o papel "Amazon Elastic Kubernetes Service Cluster Administrator".
+Clique em Avançar: Permissões.
+Na página Avançar: Permissões, siga estas etapas:
+Na caixa de pesquisa, digite "EKS".
+Na lista de políticas, selecione as seguintes políticas:
+AmazonElasticKubernetesServiceFullAccess
+AmazonElasticKubernetesServiceNodeGroupManagement
+AmazonElasticKubernetesServicePodSecurityPolicy
+Clique em Avançar: Tags.
+Na página Avançar: Tags, você pode adicionar tags ao papel se desejar.
+Clique em Criar.
+Depois de criar o papel, você precisará atribuir esse papel ao seu usuário. Para fazer isso, siga estas etapas:
+
+Acesse o console do IAM da AWS.
+Clique em Usuários.
+Clique no nome do usuário ao qual deseja atribuir o papel.
+Clique em Permissões.
+Clique em Adicionar uma política ao usuário.
+Na página Adicionar uma política ao usuário, siga estas etapas:
+Na caixa de pesquisa, digite "EKS".
+Na lista de políticas, selecione o papel que você criou anteriormente.
+Clique em Adicionar.
+Depois de atribuir o papel ao seu usuário, você poderá criar um cluster de EKS. Para fazer isso, siga estas etapas:
 
 
 
@@ -37,20 +76,28 @@ Tipo do nó: O tipo de nó que você deseja usar para seu cluster EKS.
 t3.medium
 
 Número de nós: O número de nós que você deseja em seu cluster EKS.
-
+insira 2
 
 VPC: Deixe a VPC padrão selecionada.
 Sub-rede: Deixe a sub-rede padrão selecionada.
 Clique em "Criar".
 O cluster EKS será criado e estará pronto para uso em alguns minutos.
 
-Depois que o cluster estiver pronto, você poderá usá-lo para implantar e gerenciar seus aplicativos de contêiner.
 
 
+Obtendo Credenciais da AWS:
+Faça login no Console de Gerenciamento AWS.
+No menu superior direito, selecione seu nome de usuário e clique em My Security Credentials.
+Na seção "Access keys (access key ID and secret access key)", clique em Create New Access Key.
+Guarde as informações de Access Key ID e Secret Access Key. Nota: Este é o único momento em que você verá a Secret Access Key completa, então certifique-se de copiá-la ou baixar o arquivo .csv.
+2. Configurando o AWS CLI:
+No terminal ou prompt de comando, digite: aws configure
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+Quando solicitado, insira as informações conforme abaixo:
+AWS Access Key ID: [Seu Access Key ID]
+AWS Secret Access Key: [Seu Secret Access Key]
+Default region name: us-east-1 (ou a região de sua preferência)
+Default output format: json
 
 
 Introdução ao ECR
@@ -64,26 +111,6 @@ Crie um novo repositório.
 3. Clique em "Criar".
 
 
-Instale o AWS CLI.
-
-Abra um prompt de comando ou um terminal.
-
-Execute o seguinte comando:
-
-sudo apt install awscli
-
-
-
-
-Configure o AWS CLI.
-cd ~/.aws/
-
-dentro do diretorio ~/.aws confime com o comando pwd, substitua o arquivo com o comando abaixo:
-
-wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula4/config
-
-
-
 
 
 Faça login no seu repositório ECR.
@@ -91,6 +118,8 @@ Faça login no seu repositório ECR.
 Execute o seguinte comando:
 
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <aws-account-id>.dkr.ecr.us-east-1.amazonaws.com
+
+Troque o nome aws-account-id pela sua conta.
 
 Baixe a imagem httpbin:latest do Docker Hub.
 

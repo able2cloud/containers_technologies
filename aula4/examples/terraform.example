@@ -1,0 +1,60 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_eks_cluster" "default" {
+  name = "my-eks-cluster"
+  version = "1.26.1"
+  
+  vpc_config {
+    vpc_id = aws_vpc.default.id
+    security_groups = [aws_security_group.default.id]
+   subnets = [aws_subnet.default.id, aws_subnet.default.id]
+  }
+
+  node_groups {
+    name = "default"
+    
+    node_type = "t3.medium"
+    
+    min_size = 2
+    max_size = 2
+  }
+}
+
+resource "aws_vpc" "default" {
+  cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_subnet" "default" {
+  vpc_id = aws_vpc.default.id
+  cidr_block = "10.0.0.0/24"
+}
+
+resource "aws_security_group" "default" {
+  name = "my-eks-cluster-sg"
+  
+  ingress {
+    protocol = "tcp"
+    port = 22
+    from_port = 0
+    to_port = 65535
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol = "tcp"
+    port = 443
+    from_port = 0
+    to_port = 65535
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    protocol = "tcp"
+    port = 0
+    from_port = 0
+    to_port = 65535
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

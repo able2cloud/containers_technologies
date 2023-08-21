@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Provision an Amazon EKS cluster with 2 nodes in the us-east-1 region
+Resources:
+  EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      RoleArn: arn:aws:iam::<your-account-id>:role/eks-service-role
+      KubernetesVersion: 1.21.1
+      Nodes:
+        Count: 2
+        InstanceType: t2.medium
+      VPC: vpc-<your-vpc-id>
+      Subnets:
+        - subnet-<your-subnet-id-1>
+        - subnet-<your-subnet-id-2>
+  EKSNodeGroup:
+    Type: AWS::EKS::NodeGroup
+    Properties:
+      ClusterName: !Ref EKSCluster
+      NodeRole: arn:aws:iam::<your-account-id>:role/eks-node-role
+      NodeCount: 2
+      NodeInstanceType: t2.medium
+      VPC: vpc-<your-vpc-id>
+      Subnets:
+        - subnet-<your-subnet-id-1>
+        - subnet-<your-subnet-id-2>
+Outputs:
+  EKSClusterEndpoint:
+    Description: The EKS cluster endpoint
+    Value: !GetAtt EKSCluster.Endpoint
+  EKSClusterName:
+    Description: The EKS cluster name
+    Value: !Ref EKSCluster
+  EKSNodeGroupName:
+    Description: The EKS node group name
+    Value: !Ref EKSNodeGroup
+
