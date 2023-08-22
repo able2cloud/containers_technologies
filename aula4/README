@@ -168,3 +168,10 @@ Aqui estão algumas dicas adicionais para escanear imagens via console:
 Você pode escanear imagens individualmente ou em grupos.
 Você pode agendar escaneamentos de imagem para serem executados automaticamente.
 Você pode visualizar os resultados do escaneamento de imagem em um formato gráfico ou de tabela.
+
+
+---------------------------------------------------------------------------------------------
+acesso ao eks, configurando kubectl:
+aws eks get-kubeconfig --region us-east-1 --cluster-name <cluster-name>
+export KUBECONFIG=$HOME/kubeconfig
+kubectl get nodes
