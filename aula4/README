@@ -52,6 +52,7 @@ Na lista de políticas, selecione as seguintes políticas:
 AmazonElasticKubernetesServiceFullAccess
 AmazonElasticKubernetesServiceNodeGroupManagement
 AmazonElasticKubernetesServicePodSecurityPolicy
+AmazonElasticContainerRegistryFullAccess
 Clique em Avançar: Tags.
 Na página Avançar: Tags, você pode adicionar tags ao papel se desejar.
 Clique em Criar.
