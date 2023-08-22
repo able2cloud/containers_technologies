@@ -30,15 +30,25 @@ sudo mv kubectl /usr/local/bin/kubectl
 
 
 Acesse o console do IAM da AWS.
+
 Clique em Papéis.
+
 Clique em Criar papel.
+
 Na página Criar papel, siga estas etapas:
+
 Na caixa de pesquisa, digite "EKS".
+
 Na lista de papéis, selecione o papel "Amazon Elastic Kubernetes Service Cluster Administrator".
+
 Clique em Avançar: Permissões.
+
 Na página Avançar: Permissões, siga estas etapas:
+
 Na caixa de pesquisa, digite "EKS".
+
 Na lista de políticas, selecione as seguintes políticas:
+
 AmazonElasticKubernetesServiceFullAccess
 AmazonElasticKubernetesServiceNodeGroupManagement
 AmazonElasticKubernetesServicePodSecurityPolicy
