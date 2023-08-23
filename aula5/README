@@ -12,9 +12,9 @@ sudo apt install kubectl
 3. Configuração do kubectl para o cluster EKS
 
 Abra um terminal e execute o seguinte comando para obter o arquivo de configuração do kubectl para o seu cluster EKS:
-aws eks --region us-east-1 update-kubeconfig --name my-cluster
+aws eks --region us-east-1 update-kubeconfig --name aula5-cluster
 Depois de obter o arquivo de configuração, você precisa carregá-lo para o kubectl. Para fazer isso, execute o seguinte comando:
-kubectl config use-context my-cluster
+kubectl config use-context aula5-cluster
 4. (Opcional) Instalação e configuração do Helm
 
 O Helm é um gerenciador de pacotes para Kubernetes. Ele pode ser usado para instalar e gerenciar aplicativos Kubernetes de forma reproduzível.
@@ -30,7 +30,7 @@ Use a AWS CLI para criar um cluster EKS na região North Virginia com 2 nós t3.
 
 Para criar um cluster EKS, abra um terminal e execute o seguinte comando:
 
-aws eks create-cluster --region us-east-1 --name my-cluster --node-type t3.medium --nodes 2
+aws eks create-cluster --region us-east-1 --name aula5-cluster --node-type t3.medium --nodes 2
 Depois de criar o cluster EKS, ele pode levar alguns minutos para ser inicializado.
 6. Trabalhando com Redes no Kubernetes
 
@@ -38,9 +38,9 @@ Um namespace é um recurso do Kubernetes que permite agrupar objetos relacionado
 
 Para criar um namespace, abra um terminal e execute o seguinte comando:
 
-kubectl create namespace my-namespace
+kubectl create namespace aula5-namespace
 Depois de criar um namespace, você pode ver seus pods nele usando o seguinte comando:
-kubectl get pods --namespace my-namespace
+kubectl get pods --namespace aula5-namespace
 7. Criação e explicação de um Network Policy
 
 Um Network Policy é um recurso do Kubernetes que permite restringir o tráfego entre pods.
@@ -51,16 +51,16 @@ kubectl apply -f - <<EOF
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: my-network-policy
+  name: aula5-network-policy
 spec:
   podSelector:
     matchLabels:
-      app: my-app
+      app: aula5-app
   ingress:
     - from:
       - podSelector:
           matchLabels:
-            app: my-database
+            app: aula5-database
 EOF
 Depois de criar um Network Policy, você pode ver suas regras usando o seguinte comando:
 kubectl get networkpolicies
@@ -80,10 +80,10 @@ kubectl apply -f - <<EOF
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: my-ingress
+  name: aula5-ingress
 spec:
   rules:
-    - host: my-app.example.com
+    - host: aula5-app.example.com
       http:
         paths:```
 
@@ -96,64 +96,64 @@ Um Secret é um objeto Kubernetes que armazena dados confidenciais, como senhas,
 Para criar um Secret, você pode usar o seguinte comando:
 
 kubectl create secret generic <secret-name> --from-literal=key1=value1 --from-literal=key2=value2
-Por exemplo, para criar um Secret chamado my-secret com dois valores, key1 e value1 e key2 e value2, você usaria o seguinte comando:
+Por exemplo, para criar um Secret chamado aula5-secret com dois valores, key1 e value1 e key2 e value2, você usaria o seguinte comando:
 
-kubectl create secret generic my-secret --from-literal=key1=value1 --from-literal=key2=value2
+kubectl create secret generic aula5-secret --from-literal=key1=value1 --from-literal=key2=value2
 Depois de criar um Secret, você pode usá-lo em um Pod definindo o volume secret para o Pod. O volume secret mapeia o Secret para um volume no Pod e o Pod pode acessar os dados do Secret usando o caminho do volume.
 
-Por exemplo, o seguinte YAML define um Pod com um volume secret que mapeia o Secret my-secret para o volume /etc/secrets:
+Por exemplo, o seguinte YAML define um Pod com um volume secret que mapeia o Secret aula5-secret para o volume /etc/secrets:
 
 apiVersion: v1
 kind: Pod
 metadata:
-  name: my-pod
+  name: aula5-pod
 spec:
   containers:
-  - name: my-container
+  - name: aula5-container
     image: nginx
     command: ["/bin/sh", "-c", "while true; do echo hello world; sleep 1; done"]
   volumes:
   - name: secrets
     secret:
-      secretName: my-secret
+      secretName: aula5-secret
 Para criar o Pod, você pode usar o seguinte comando:
 
-kubectl create -f my-pod.yaml
+kubectl create -f aula5-pod.yaml
 Depois de criar o Pod, você pode acessar os dados do Secret usando o caminho do volume. Por exemplo, o seguinte comando imprime o valor da chave key1 do Secret:
 
-kubectl exec -it my-pod -- sh -c "cat /etc/secrets/key1"
+kubectl exec -it aula5-pod -- sh -c "cat /etc/secrets/key1"
 Criação e uso de um ConfigMap
 Um ConfigMap é um objeto Kubernetes que armazena dados não confidenciais, como configurações, arquivos de configuração e arquivos de log. Os ConfigMaps não são criptografados e podem ser visualizados por usuários e processos não autorizados.
 
 Para criar um ConfigMap, você pode usar o seguinte comando:
 
 kubectl create configmap <configmap-name> --from-literal=key1=value1 --from-literal=key2=value2
-Por exemplo, para criar um ConfigMap chamado my-configmap com dois valores, key1 e value1 e key2 e value2, você usaria o seguinte comando:
+Por exemplo, para criar um ConfigMap chamado aula5-configmap com dois valores, key1 e value1 e key2 e value2, você usaria o seguinte comando:
 
-kubectl create configmap my-configmap --from-literal=key1=value1 --from-literal=key2=value2
+kubectl create configmap aula5-configmap --from-literal=key1=value1 --from-literal=key2=value2
 Depois de criar um ConfigMap, você pode usá-lo em um Pod definindo o volume configmap para o Pod. O volume configmap mapeia o ConfigMap para um volume no Pod e o Pod pode acessar os dados do ConfigMap usando o caminho do volume.
 
-Por exemplo, o seguinte YAML define um Pod com um volume configmap que mapeia o ConfigMap my-configmap para o volume /etc/config:
+Por exemplo, o seguinte YAML define um Pod com um volume configmap que mapeia o ConfigMap aula5-configmap para o volume /etc/config:
 
 apiVersion: v1
 kind: Pod
 metadata:
-  name: my-pod
+  name: aula5-pod
 spec:
   containers:
-  - name: my-container
+  - name: aula5-container
     image: nginx
     command: ["/bin/sh", "-c", "while true; do echo hello world; sleep 1; done"]
   volumes:
   - name: config
     configMap:
-      name: my-configmap
+      name: aula5-configmap
 Para criar o Pod, você pode usar o seguinte comando:
 
-kubectl create -f my-pod.yaml
+kubectl create -f aula5-pod.yaml
 Depois de criar o Pod, você pode acessar os dados do ConfigMap usando o caminho do volume. Por exemplo, o seguinte comando imprime o valor da chave key1 do ConfigMap:
 
-kubectl exec -it my-pod -- sh -c "cat /etc/config/key1"
+kubectl exec -it aula5-pod -- sh -c "cat /etc/config/key1"
 Trabalhando com Armazenamento Persistente
 Explicação sobre Persistent Volumes (PV) e Persistent Volume Claims (PVC)
 Um Persistent Volume (PV) é um recurso Kubernetes que fornece armazenamento persistente para
