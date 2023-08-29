@@ -5,16 +5,25 @@ sudo apt install awscli
 Depois de instalar a AWS CLI, você precisa se autenticar com a sua conta da AWS. Para fazer isso, execute o seguinte comando:
 aws configure
 Siga as instruções no prompt para inserir suas credenciais da AWS.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 2. Instalação do kubectl
 
 Abra um terminal e execute o seguinte comando para instalar o kubectl:
 sudo apt install kubectl
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 3. Configuração do kubectl para o cluster EKS
 
 Abra um terminal e execute o seguinte comando para obter o arquivo de configuração do kubectl para o seu cluster EKS:
 aws eks --region us-east-1 update-kubeconfig --name aula5-cluster
 Depois de obter o arquivo de configuração, você precisa carregá-lo para o kubectl. Para fazer isso, execute o seguinte comando:
 kubectl config use-context aula5-cluster
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 4. (Opcional) Instalação e configuração do Helm
 
 O Helm é um gerenciador de pacotes para Kubernetes. Ele pode ser usado para instalar e gerenciar aplicativos Kubernetes de forma reproduzível.
@@ -24,6 +33,10 @@ Para instalar o Helm, abra um terminal e execute o seguinte comando:
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get | bash
 Depois de instalar o Helm, você precisa configurá-lo. Para fazer isso, execute o seguinte comando:
 helm init
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 5. Subindo o Cluster de EKS
 
 Use a AWS CLI para criar um cluster EKS na região North Virginia com 2 nós t3.medium.
@@ -32,6 +45,11 @@ Para criar um cluster EKS, abra um terminal e execute o seguinte comando:
 
 aws eks create-cluster --region us-east-1 --name aula5-cluster --node-type t3.medium --nodes 2
 Depois de criar o cluster EKS, ele pode levar alguns minutos para ser inicializado.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 6. Trabalhando com Redes no Kubernetes
 
 Um namespace é um recurso do Kubernetes que permite agrupar objetos relacionados. Por exemplo, você pode usar um namespace para agrupar todos os seus pods de desenvolvimento ou todos os seus pods de produção.
@@ -41,6 +59,7 @@ Para criar um namespace, abra um terminal e execute o seguinte comando:
 kubectl create namespace aula5-namespace
 Depois de criar um namespace, você pode ver seus pods nele usando o seguinte comando:
 kubectl get pods --namespace aula5-namespace
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 7. Criação e explicação de um Network Policy
 
 Um Network Policy é um recurso do Kubernetes que permite restringir o tráfego entre pods.
@@ -64,6 +83,9 @@ spec:
 EOF
 Depois de criar um Network Policy, você pode ver suas regras usando o seguinte comando:
 kubectl get networkpolicies
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 8. Gerenciando o Tráfego com Ingress
 
 Um Ingress é um recurso do Kubernetes que permite rotear o tráfego para diferentes pods em um cluster.
@@ -88,7 +110,7 @@ spec:
         paths:```
 
 
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Gerenciamento de Configurações e Dados Sensíveis
 Criação e uso de um Secret
 Um Secret é um objeto Kubernetes que armazena dados confidenciais, como senhas, chaves SSH e certificados. Os Secrets são criptografados e não podem ser visualizados por usuários ou processos não autorizados.
@@ -122,6 +144,9 @@ kubectl create -f aula5-pod.yaml
 Depois de criar o Pod, você pode acessar os dados do Secret usando o caminho do volume. Por exemplo, o seguinte comando imprime o valor da chave key1 do Secret:
 
 kubectl exec -it aula5-pod -- sh -c "cat /etc/secrets/key1"
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Criação e uso de um ConfigMap
 Um ConfigMap é um objeto Kubernetes que armazena dados não confidenciais, como configurações, arquivos de configuração e arquivos de log. Os ConfigMaps não são criptografados e podem ser visualizados por usuários e processos não autorizados.
 
@@ -151,6 +176,7 @@ spec:
 Para criar o Pod, você pode usar o seguinte comando:
 
 kubectl create -f aula5-pod.yaml
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Depois de criar o Pod, você pode acessar os dados do ConfigMap usando o caminho do volume. Por exemplo, o seguinte comando imprime o valor da chave key1 do ConfigMap:
 
 kubectl exec -it aula5-pod -- sh -c "cat /etc/config/key1"
