@@ -1,30 +1,43 @@
-1. Instalação da AWS CLI
+Crie uma instância EC2 executando Ubuntu 22.04. Esta instância atuará como seu ambiente de trabalho durante o laboratório.
+Etapa 1: Preparando o Ambiente
 
-Abra um terminal e execute o seguinte comando para instalar a AWS CLI:
-sudo apt install awscli
-Depois de instalar a AWS CLI, você precisa se autenticar com a sua conta da AWS. Para fazer isso, execute o seguinte comando:
-aws configure
-Siga as instruções no prompt para inserir suas credenciais da AWS.
+Acesse a instância EC2 usando SSH ou qualquer método preferido.
+Atualize a lista de pacotes e o sistema operacional com os seguintes comandos:
+
+
+sudo apt update
+sudo apt upgrade -y
+
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt update
+sudo apt install docker-ce -y
+
+Instale o kubectl
+
+sudo apt install -y kubectl
+
+Ou
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.0/bin/linux/amd64/kubectl
+sudo chmod +x kubectl
+sudo mv kubectl /usr/local/bin/kubectl
+
+
+Install kind:
+
+
+# For AMD64 / x86_64
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+# For ARM64
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-2. Instalação do kubectl
 
-Abra um terminal e execute o seguinte comando para instalar o kubectl:
-sudo apt install kubectl
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-3. Configuração do kubectl para o cluster EKS
-
-Abra um terminal e execute o seguinte comando para obter o arquivo de configuração do kubectl para o seu cluster EKS:
-aws eks --region us-east-1 update-kubeconfig --name aula5-cluster
-Depois de obter o arquivo de configuração, você precisa carregá-lo para o kubectl. Para fazer isso, execute o seguinte comando:
-kubectl config use-context aula5-cluster
-
-
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-4. (Opcional) Instalação e configuração do Helm
+ Instalação e configuração do Helm
 
 O Helm é um gerenciador de pacotes para Kubernetes. Ele pode ser usado para instalar e gerenciar aplicativos Kubernetes de forma reproduzível.
 
@@ -36,41 +49,44 @@ helm init
 
 
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-5. Subindo o Cluster de EKS
-
-Use a AWS CLI para criar um cluster EKS na região North Virginia com 2 nós t3.medium.
-
-Para criar um cluster EKS, abra um terminal e execute o seguinte comando:
-
-aws eks create-cluster --region us-east-1 --name aula5-cluster --node-type t3.medium --nodes 2
-Depois de criar o cluster EKS, ele pode levar alguns minutos para ser inicializado.
-
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Vire root:
+sudo su -
 
 
-6. Trabalhando com Redes no Kubernetes
+Laboratório Kubernetes usando Kind: Trabalhando com Recursos Avançados
+Configuração Inicial
+Criação do Cluster
+Neste primeiro passo, você criará um cluster usando Kind.
 
-Um namespace é um recurso do Kubernetes que permite agrupar objetos relacionados. Por exemplo, você pode usar um namespace para agrupar todos os seus pods de desenvolvimento ou todos os seus pods de produção.
 
-Para criar um namespace, abra um terminal e execute o seguinte comando:
+kind create cluster --name aula5-cluster
+
+
+Trabalhando com Namespaces
+1. Criação de um Namespace
+Namespaces ajudam a segmentar seu cluster Kubernetes, permitindo que você isole recursos logicamente.
+
 
 kubectl create namespace aula5-namespace
-Depois de criar um namespace, você pode ver seus pods nele usando o seguinte comando:
+2. Verificação dos Pods no Namespace
+Este comando mostra se há algum pod rodando no namespace que acabamos de criar.
+
+
 kubectl get pods --namespace aula5-namespace
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-7. Criação e explicação de um Network Policy
+Criação e Explicação de Network Policy
+1. Criação de um Network Policy
+Network Policies permitem restringir o tráfego entre os pods.
 
-Um Network Policy é um recurso do Kubernetes que permite restringir o tráfego entre pods.
+Salve o YAML abaixo como aula5-network-policy.yaml.
 
-Para criar um Network Policy, abra um terminal e execute o seguinte comando:
 
-kubectl apply -f - <<EOF
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: aula5-network-policy
+  namespace: aula5-namespace
 spec:
   podSelector:
     matchLabels:
@@ -80,119 +96,88 @@ spec:
       - podSelector:
           matchLabels:
             app: aula5-database
-EOF
-Depois de criar um Network Policy, você pode ver suas regras usando o seguinte comando:
-kubectl get networkpolicies
+Execute o comando para aplicar o Network Policy:
 
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-8. Gerenciando o Tráfego com Ingress
-
-Um Ingress é um recurso do Kubernetes que permite rotear o tráfego para diferentes pods em um cluster.
-
-Para instalar o Ingress Controller (Nginx), abra um terminal e execute o seguinte comando:
-
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.4/deploy/static/provider/aws/deploy.yaml
-
-Depois de instalar o Ingress Controller (Nginx), você pode criar um Ingress Resource para direcionar o tráfego.
-
-Para criar um Ingress Resource, abra um terminal e execute o seguinte comando:
-
-kubectl apply -f - <<EOF
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: aula5-ingress
-spec:
-  rules:
-    - host: aula5-app.example.com
-      http:
-        paths:```
+kubectl apply -f aula5-network-policy.yaml
+2. Verificação das Regras do Network Policy
+Este comando lhe dará uma visão das políticas de rede que você definiu.
 
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+kubectl get networkpolicies --namespace aula5-namespace
 Gerenciamento de Configurações e Dados Sensíveis
-Criação e uso de um Secret
-Um Secret é um objeto Kubernetes que armazena dados confidenciais, como senhas, chaves SSH e certificados. Os Secrets são criptografados e não podem ser visualizados por usuários ou processos não autorizados.
-
-Para criar um Secret, você pode usar o seguinte comando:
-
-kubectl create secret generic <secret-name> --from-literal=key1=value1 --from-literal=key2=value2
-Por exemplo, para criar um Secret chamado aula5-secret com dois valores, key1 e value1 e key2 e value2, você usaria o seguinte comando:
-
-kubectl create secret generic aula5-secret --from-literal=key1=value1 --from-literal=key2=value2
-Depois de criar um Secret, você pode usá-lo em um Pod definindo o volume secret para o Pod. O volume secret mapeia o Secret para um volume no Pod e o Pod pode acessar os dados do Secret usando o caminho do volume.
-
-Por exemplo, o seguinte YAML define um Pod com um volume secret que mapeia o Secret aula5-secret para o volume /etc/secrets:
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: aula5-pod
-spec:
-  containers:
-  - name: aula5-container
-    image: nginx
-    command: ["/bin/sh", "-c", "while true; do echo hello world; sleep 1; done"]
-  volumes:
-  - name: secrets
-    secret:
-      secretName: aula5-secret
-Para criar o Pod, você pode usar o seguinte comando:
-
-kubectl create -f aula5-pod.yaml
-Depois de criar o Pod, você pode acessar os dados do Secret usando o caminho do volume. Por exemplo, o seguinte comando imprime o valor da chave key1 do Secret:
-
-kubectl exec -it aula5-pod -- sh -c "cat /etc/secrets/key1"
+1. Criação e uso de um Secret
+Secrets são usados para armazenar informações sensíveis como senhas e chaves.
 
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Criação e uso de um ConfigMap
-Um ConfigMap é um objeto Kubernetes que armazena dados não confidenciais, como configurações, arquivos de configuração e arquivos de log. Os ConfigMaps não são criptografados e podem ser visualizados por usuários e processos não autorizados.
+kubectl create secret generic aula5-secret --from-literal=key1=value1 --from-literal=key2=value2 --namespace aula5-namespace
+2. Criação e uso de um ConfigMap
+ConfigMaps são semelhantes aos Secrets, mas para dados não-confidenciais.
 
-Para criar um ConfigMap, você pode usar o seguinte comando:
 
-kubectl create configmap <configmap-name> --from-literal=key1=value1 --from-literal=key2=value2
-Por exemplo, para criar um ConfigMap chamado aula5-configmap com dois valores, key1 e value1 e key2 e value2, você usaria o seguinte comando:
-
-kubectl create configmap aula5-configmap --from-literal=key1=value1 --from-literal=key2=value2
-Depois de criar um ConfigMap, você pode usá-lo em um Pod definindo o volume configmap para o Pod. O volume configmap mapeia o ConfigMap para um volume no Pod e o Pod pode acessar os dados do ConfigMap usando o caminho do volume.
-
-Por exemplo, o seguinte YAML define um Pod com um volume configmap que mapeia o ConfigMap aula5-configmap para o volume /etc/config:
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: aula5-pod
-spec:
-  containers:
-  - name: aula5-container
-    image: nginx
-    command: ["/bin/sh", "-c", "while true; do echo hello world; sleep 1; done"]
-  volumes:
-  - name: config
-    configMap:
-      name: aula5-configmap
-Para criar o Pod, você pode usar o seguinte comando:
-
-kubectl create -f aula5-pod.yaml
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Depois de criar o Pod, você pode acessar os dados do ConfigMap usando o caminho do volume. Por exemplo, o seguinte comando imprime o valor da chave key1 do ConfigMap:
-
-kubectl exec -it aula5-pod -- sh -c "cat /etc/config/key1"
+kubectl create configmap aula5-configmap --from-literal=key1=value1 --from-literal=key2=value2 --namespace aula5-namespace
 Trabalhando com Armazenamento Persistente
-Explicação sobre Persistent Volumes (PV) e Persistent Volume Claims (PVC)
-Um Persistent Volume (PV) é um recurso Kubernetes que fornece armazenamento persistente para
+1. Criação de um Persistent Volume (PV)
+Persistent Volumes oferecem uma maneira de criar um armazenamento durável para seus pods.
+
+Salve o YAML abaixo como aula5-pv.yaml.
 
 
-git clone https://github.com/kubernetes/metrics-server.git
-Vá para o diretório do Metrics Server:
-cd metrics-server
-Instale o Metrics Server:
-kubectl apply -f install.yaml
-Verifique se o Metrics Server está em execução:
-kubectl get pods
-Você deve ver uma saída como esta:
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aula5-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /data/aula5-pv
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - aula5-cluster-control-plane
 
-NAME                                READY   STATUS    RESTARTS   AGE
-metrics-server-5789d79745-q652z   1/1     Running   0          1m
+Execute o comando para aplicar o Persistent Volume:
+
+kubectl apply -f aula5-pv.yaml
+2. Criação de um Persistent Volume Claim (PVC)
+PVCs permitem que os pods solicitem espaço de um Persistent Volume.
+
+Salve o YAML abaixo como aula5-pvc.yaml.
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aula5-pvc
+  namespace: aula5-namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-storage
+Execute o comando para aplicar o PVC:
+
+
+kubectl apply -f aula5-pvc.yaml
+
+O que é o Metrics Server?
+O Metrics Server é um agregador de métricas de recursos, como CPU e memória, que são expostas pelo Kubelet em cada nó. Essas métricas são coletadas para fornecer as métricas de API para escalabilidade, 
+bem como para o comando kubectl top, permitindo que você visualize rapidamente o uso de recursos em seu cluster. É uma peça fundamental para a compreensão da eficiência e gerenciamento de recursos em um cluster Kubernetes.
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/high-availability-1.21+.yaml
+
+liste os pods: kubectl get pods -A
+
+se os pods do metrics server estiverem rodando, execute kubectl top pods -A
+
