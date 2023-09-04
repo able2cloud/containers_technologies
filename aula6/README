@@ -1,0 +1,15 @@
+wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/consumer.yaml
+wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/producer.yaml
+wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/kafka-final-service.yaml
+wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/kafka-final-deployment.yaml
+
+
+kubectl create -f consumer.yaml
+kubectl create -f producer.yaml
+kubectl create -f kafka-final-service.yaml
+kubectl create -f kafka-final-deployment.yaml
+
+
+kubectl logs kafka-producer
+kubectl logs kafka-consumer
+
