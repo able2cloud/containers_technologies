@@ -1,4 +1,18 @@
 README - Configuração e Operação do Kafka
+
+Criando cluster com kind:
+kind create cluster --name k8s-kafka-test
+
+criando recurso zookeeper 
+
+kubectl create -f https://raw.githubusercontent.com/able2cloud/containers_technologies/refs/heads/main/aula6/zookeeper.yaml
+
+Espera o Zookeeper subir: 
+criando recurso kafka
+
+kubectl create -f https://raw.githubusercontent.com/able2cloud/containers_technologies/refs/heads/main/aula6/kafka.yaml
+
+
 Objetivo
 Este documento descreve os passos para criar um tópico Kafka, produzir e consumir mensagens, e verificar o status do tópico e dos grupos de consumidores.
 
