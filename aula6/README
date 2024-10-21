@@ -1,15 +1,42 @@
-wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/consumer.yaml
-wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/producer.yaml
-wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/kafka-final-service.yaml
-wget https://raw.githubusercontent.com/able2cloud/containers_technologies/main/aula6/kafka-final-deployment.yaml
+README - Configuração e Operação do Kafka
+Objetivo
+Este documento descreve os passos para criar um tópico Kafka, produzir e consumir mensagens, e verificar o status do tópico e dos grupos de consumidores.
 
+1. Acessando o Pod do Kafka
+Execute o comando abaixo para acessar o pod onde o Kafka está rodando:
 
-kubectl create -f consumer.yaml
-kubectl create -f producer.yaml
-kubectl create -f kafka-final-service.yaml
-kubectl create -f kafka-final-deployment.yaml
+sudo kubectl exec -it kafka-0 -n kafka -- /bin/bash
+2. Criando um Tópico no Kafka
+Após acessar o pod Kafka, crie um tópico chamado RC1-topic com 3 partições e um fator de replicação de 1:
 
+kafka-topics.sh --create --topic RC1-topic --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092
+3. Listando os Tópicos Existentes
+Para garantir que o tópico foi criado corretamente, liste todos os tópicos no Kafka:
 
-kubectl logs kafka-producer
-kubectl logs kafka-consumer
+kafka-topics.sh --list --bootstrap-server localhost:9092
+4. Produzindo Mensagens no Tópico
+Para produzir 130 mensagens no tópico RC1-topic, utilize o seguinte comando que gera mensagens no formato gol N rogerio ceni:
+
+for i in {1..130}; do echo "gol $i rogerio ceni"; done | kafka-console-producer.sh --topic RC1-topic --bootstrap-server localhost:9092
+5. Consumindo Mensagens do Tópico
+Agora, para consumir todas as mensagens desde o início do tópico, crie um consumidor no grupo rc1-consumer-group:
+
+kafka-console-consumer.sh --topic RC1-topic --bootstrap-server localhost:9092 --group rc1-consumer-group --from-beginning
+6. Verificando o Status do Grupo de Consumidores
+Após consumir as mensagens, você pode verificar o progresso e o status do grupo de consumidores rc1-consumer-group:
+
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group rc1-consumer-group
+7. Descrição Detalhada do Tópico
+Para obter informações detalhadas sobre o tópico, como as partições, líder e réplicas, use o seguinte comando:
+
+kafka-topics.sh --describe --topic RC1-topic --bootstrap-server localhost:9092
+Resumo dos Comandos:
+Criação do Tópico: Cria o tópico com 3 partições e fator de replicação 1.
+Produção de Mensagens: Envia 130 mensagens para o tópico.
+Consumo de Mensagens: Consome todas as mensagens desde o início do tópico.
+Verificação do Grupo de Consumidores: Verifica o progresso e offsets do grupo de consumidores.
+Descrição do Tópico: Fornece detalhes sobre partições e réplicas do tópico.
+Observações
+O tópico RC1-topic é distribuído em 3 partições.
+O grupo de consumidores rc1-consumer-group foi utilizado para gerenciar o consumo.
 
